@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests  # Test step added back
+      - name: Run tests
         run: npm test
 
       - name: Build the React app
@@ -44,6 +44,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:latest .
+        working-directory: ./comet-react-app  # This specifies the directory where your Dockerfile is located
 
       - name: Tag Docker image
         run: |
