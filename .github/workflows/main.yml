@@ -19,6 +19,11 @@ jobs:
         with:
           node-version: '16'  # Use the appropriate Node.js version for your project
 
+      - name: Check Docker Version and Features
+        run: |
+          docker --version
+          docker build --help
+
       - name: Install dependencies
         run: npm install
 
@@ -37,13 +42,13 @@ jobs:
 
       # Log in to Amazon ECR
       - name: Log in to Amazon ECR
-        id: ecr_login
+        id: ecr_loginui
         uses: aws-actions/amazon-ecr-login@v1
 
       # Docker Build and Push to ECR
       - name: Build Docker image
         run: |
-          docker build -t "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:latest" .
+          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:latest  .
 
       - name: Tag Docker image
         run: |
