@@ -47,7 +47,7 @@ jobs:
 
       # Docker Build and Push to ECR
       - name: Build Docker image
-        run: docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:latest .
+        run: docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:latest "."
           
       - name: Tag Docker image
         run: |
