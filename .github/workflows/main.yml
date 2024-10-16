@@ -55,4 +55,4 @@ jobs:
 
       - name: Push Docker image to ECR
         run: |
-          docker push test-image:v1
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:latest
