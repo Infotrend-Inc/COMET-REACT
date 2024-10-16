@@ -55,7 +55,9 @@ jobs:
           echo "Region: ${{ secrets.AWS_REGION }}"
         
       - name: Tag Docker image
-        run: docker tag test-image:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:latest
+        run: |
+          docker tag test-image:latest 971422678337.dkr.ecr.us-east-1.amazonaws.com/comet-app-repo:latest
           
       - name: Push Docker image to ECR
-        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:latest
+        run: |
+          docker push 971422678337.dkr.ecr.us-east-1.amazonaws.com/comet-app-repo:latest
