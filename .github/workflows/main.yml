@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # Use the appropriate Node.js version for your project
+          node-version: '16'
 
       - name: Check Docker Version and Features
         run: |
@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests  # Test step added back
+      - name: Run tests
         run: npm test
 
       - name: Build the React app
@@ -50,7 +50,7 @@ jobs:
         run: docker build -t test-image:latest .
 
       - name: Tag Docker image
-        run:  docker tag test-image:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:latest
+        run: docker tag test-image:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:latest
           
       - name: Push Docker image to ECR
-        run:  docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:latest    
+        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:latest
