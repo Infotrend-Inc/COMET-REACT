@@ -56,8 +56,8 @@ jobs:
         
       - name: Tag Docker image
         run: |
-          docker tag test-image:latest 971422678337.dkr.ecr.us-east-1.amazonaws.com/comet-app-repo:latest
+          docker tag test-image:latest 971422678337.dkr.ecr.us-east-1.amazonaws.com/comet-app-repo:react-latest
           
       - name: Push Docker image to ECR
         run: |
-          docker push 971422678337.dkr.ecr.us-east-1.amazonaws.com/comet-app-repo:latest
+          docker push 971422678337.dkr.ecr.us-east-1.amazonaws.com/comet-app-repo:react-latest
