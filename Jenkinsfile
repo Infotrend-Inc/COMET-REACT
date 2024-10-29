@@ -48,8 +48,8 @@ pipeline {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS_ID]]) {
                     bat '''
-                    kubectl set image deployment/java-app java-container=%ECR_REPOSITORY%:latest --namespace=default
-                    kubectl rollout status deployment/java-app --namespace=default
+                    kubectl set image deployment/react-app react-container=%ECR_REPOSITORY%:react-latest --namespace=default
+                    kubectl rollout status deployment/react-app --namespace=default
                     '''
                 }
             }
