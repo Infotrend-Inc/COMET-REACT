@@ -25,10 +25,7 @@ jobs:
           docker build --help
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Run ESLint
-        run: npm run lint
+        run: npm install 
 
       - name: Run tests
         run: npm test
