@@ -14,24 +14,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-
       - name: Check Docker Version and Features
         run: |
           docker --version
           docker build --help
 
-      - name: Install dependencies
-        run: npm install 
+      - name: Build Docker image with dependencies and tests
+        run: |
+          docker build \
+            --build-arg NODE_ENV=test \
+            -t test-image:latest \
+            -f Dockerfile.ci .
 
-      - name: Run tests
-        run: npm test
+      - name: Run tests inside Docker container
+        run: docker run test-image:latest npm test
 
-      - name: Build the React app
-        run: npm run build
+      - name: Build production Docker image
+        run: |
+          docker build \
+            -t production-image:latest \
+            .
 
       - name: Configure AWS credentials using the AWS CLI action
         uses: aws-actions/configure-aws-credentials@v1
@@ -40,24 +42,19 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Log in to Amazon ECR
       - name: Log in to Amazon ECR
         id: ecr_loginui
         uses: aws-actions/amazon-ecr-login@v1
 
-      # Docker Build and Push to ECR
-      - name: Build Docker image
-        run: docker build -t test-image:latest .
-        
       - name: Debug - Check AWS account ID and region
         run: |
           echo "Account ID: ${{ secrets.AWS_ACCOUNT_ID }}"
           echo "Region: ${{ secrets.AWS_REGION }}"
-        
+
       - name: Tag Docker image
         run: |
-          docker tag test-image:latest 971422678337.dkr.ecr.us-east-1.amazonaws.com/comet-app-repo:react-latest
-          
+          docker tag production-image:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:react-latest
+
       - name: Push Docker image to ECR
         run: |
-          docker push 971422678337.dkr.ecr.us-east-1.amazonaws.com/comet-app-repo:react-latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:react-latest
