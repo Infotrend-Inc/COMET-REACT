@@ -22,7 +22,7 @@ WORKDIR /app
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/node_modules ./
 COPY --from=build /app/public ./
-COPY --from=build /app/src ./
+COPY --from=build /app/src ./src
 
 # Use an official nginx image to serve the React app
 FROM nginx:alpine
