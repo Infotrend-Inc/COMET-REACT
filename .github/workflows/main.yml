@@ -19,21 +19,14 @@ jobs:
           docker --version
           docker build --help
 
-      - name: Build Docker image with dependencies and tests
+      - name: Build Docker image with dependencies
         run: |
           docker build \
-            --build-arg NODE_ENV=test \
             -t test-image:latest \
-            -f Dockerfile.ci .
+            .
 
       - name: Run tests inside Docker container
         run: docker run test-image:latest npm test
-
-      - name: Build production Docker image
-        run: |
-          docker build \
-            -t production-image:latest \
-            .
 
       - name: Configure AWS credentials using the AWS CLI action
         uses: aws-actions/configure-aws-credentials@v1
@@ -53,7 +46,7 @@ jobs:
 
       - name: Tag Docker image
         run: |
-          docker tag production-image:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:react-latest
+          docker tag test-image:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/comet-app-repo:react-latest
 
       - name: Push Docker image to ECR
         run: |
