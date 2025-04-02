@@ -24,7 +24,7 @@ jobs:
           docker build --target test -t test-image:latest .
 
       - name: Run tests inside Docker container
-        run: docker run test-image:latest npm test --watchAll=false
+        run: docker run test-image:latest npx react-scripts test --watchAll=false
 
       - name: Build production image
         run: |
