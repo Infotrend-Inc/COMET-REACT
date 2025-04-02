@@ -24,15 +24,6 @@ jobs:
           docker --version
           docker build --help
 
-      - name: Install dependencies
-        run: npm install 
-
-      - name: Run tests
-        run: npm test
-
-      - name: Build the React app
-        run: npm run build
-
       - name: Configure AWS credentials using the AWS CLI action
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -45,19 +36,26 @@ jobs:
         id: ecr_loginui
         uses: aws-actions/amazon-ecr-login@v1
 
-      # Docker Build and Push to ECR
+      # Docker Build
       - name: Build Docker image
         run: docker build -t test-image:latest .
-        
+
+      # Run tests inside the Docker container
+      - name: Run tests inside container
+        run: |
+          docker run --rm test-image:latest npm test
+
+      # Debug - Check AWS account ID and region
       - name: Debug - Check AWS account ID and region
         run: |
           echo "Account ID: ${{ secrets.AWS_ACCOUNT_ID }}"
           echo "Region: ${{ secrets.AWS_REGION }}"
-        
+
+      # Tag and Push Docker Image to ECR (only if tests pass)
       - name: Tag Docker image
         run: |
           docker tag test-image:latest 971422678337.dkr.ecr.us-east-1.amazonaws.com/comet-app-repo:react-latest
-          
+
       - name: Push Docker image to ECR
         run: |
           docker push 971422678337.dkr.ecr.us-east-1.amazonaws.com/comet-app-repo:react-latest
