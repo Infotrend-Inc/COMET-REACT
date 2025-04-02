@@ -36,14 +36,9 @@ jobs:
         id: ecr_loginui
         uses: aws-actions/amazon-ecr-login@v1
 
-      # Docker Build
-      - name: Build Docker image
+      # Docker Build (tests will run inside Dockerfile)
+      - name: Build Docker image (includes testing)
         run: docker build -t test-image:latest .
-
-      # Run tests inside the Docker container
-      - name: Run tests inside container
-        run: |
-          docker run --rm test-image:latest npm test
 
       # Debug - Check AWS account ID and region
       - name: Debug - Check AWS account ID and region
