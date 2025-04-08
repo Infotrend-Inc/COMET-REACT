@@ -32,7 +32,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       # Log in to Amazon ECR
-      - name: Logs in to Amazon ECR
+      - name: Log in to Amazon ECR
         id: ecr_loginui
         uses: aws-actions/amazon-ecr-login@v1
 
